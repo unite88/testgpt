@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touch Screen Interaction</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        #touchArea {
+            width: 200px;
+            height: 200px;
+            background-color: #ccc;
+            border: 1px solid #000;
+            touch-action: none; /* Prevent default touch gestures */
+        }
+    </style>
+</head>
+<body>
+    <div id="touchArea"></div>
+
+    <script>
+        const touchArea = document.getElementById('touchArea');
+
+        touchArea.addEventListener('touchstart', handleTouchStart);
+        touchArea.addEventListener('touchmove', handleTouchMove);
+        touchArea.addEventListener('touchend', handleTouchEnd);
+
+        let touchStartPosition = { x: 0, y: 0 };
+
+        function handleTouchStart(event) {
+            const touch = event.touches[0];
+            touchStartPosition = { x: touch.clientX, y: touch.clientY };
+        }
+
+        function handleTouchMove(event) {
+            event.preventDefault();
+            const touch = event.touches[0];
+            const deltaX = touch.clientX - touchStartPosition.x;
+            const deltaY = touch.clientY - touchStartPosition.y;
+            touchStartPosition = { x: touch.clientX, y: touch.clientY };
+            moveElement(deltaX, deltaY);
+        }
+
+        function handleTouchEnd() {
+            // Perform actions when touch ends (optional)
+        }
+
+        function moveElement(deltaX, deltaY) {
+            const element = document.getElementById('touchArea');
+            const rect = element.getBoundingClientRect();
+            const newX = rect.left + deltaX;
+            const newY = rect.top + deltaY;
+
+            if (newX >= 0 && newX <= window.innerWidth - rect.width) {
+                element.style.left = `${newX}px`;
+            }
+
+            if (newY >= 0 && newY <= window.innerHeight - rect.height) {
+                element.style.top = `${newY}px`;
+            }
+        }
+    </script>
+</body>
+</html>
