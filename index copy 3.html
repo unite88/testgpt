@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Pixels</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+
+        .pixel-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .pixel {
+            width: 10px;
+            height: 10px;
+            margin: 1px;
+            background-color: red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="pixel-container"></div>
+
+    <script>
+        const container = document.querySelector('.pixel-container');
+
+        // Create pixels
+        for (let i = 0; i < 100; i++) {
+            const pixel = document.createElement('div');
+            pixel.classList.add('pixel');
+            pixel.style.left = `${Math.random() * 90}%`;
+            pixel.style.top = `${Math.random() * 90}%`;
+            pixel.style.backgroundColor = `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`;
+            container.appendChild(pixel);
+        }
+
+        // Move pixels
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach((pixel) => {
+            setInterval(() => {
+                const offsetX = (Math.random() - 0.5) * 20;
+                const offsetY = (Math.random() - 0.5) * 20;
+                const rect = pixel.getBoundingClientRect();
+                const newX = rect.left + offsetX;
+                const newY = rect.top + offsetY;
+
+                if (newX >= 0 && newX <= window.innerWidth - rect.width) {
+                    pixel.style.left = `${newX}px`;
+                }
+
+                if (newY >= 0 && newY <= window.innerHeight - rect.height) {
+                    pixel.style.top = `${newY}px`;
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
